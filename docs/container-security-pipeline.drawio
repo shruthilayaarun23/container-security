@@ -1,0 +1,70 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" version="28.2.5">
+  <diagram id="container-security-pipeline" name="Container Security Pipeline">
+    <mxGraphModel dx="1042" dy="527" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1000" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="2" value="Container Security Pipeline - Architecture Diagram" style="text;html=1;fontSize=18;fontStyle=1;align=center;" parent="1" vertex="1">
+          <mxGeometry x="300" y="20" width="1000" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="3" value="Development" style="swimlane;fillColor=#E3F2FD;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="40" y="100" width="250" height="300" as="geometry" />
+        </mxCell>
+        <mxCell id="4" value="Developer Workstation&#xa;Flask App (SQLi, XSS, etc.)" style="rounded=1;whiteSpace=wrap;fillColor=#FFFFFF;" parent="3" vertex="1">
+          <mxGeometry x="20" y="60" width="200" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="5" value="Build" style="swimlane;fillColor=#E8F5E9;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="320" y="100" width="300" height="300" as="geometry" />
+        </mxCell>
+        <mxCell id="6" value="Dockerfile (runs as root, secrets in env)" style="rounded=1;whiteSpace=wrap;fillColor=#FFFFFF;" parent="5" vertex="1">
+          <mxGeometry x="20" y="60" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="7" value="Docker Build → Container Image" style="rounded=1;whiteSpace=wrap;fillColor=#FFFFFF;" parent="5" vertex="1">
+          <mxGeometry x="160" y="60" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="8" value="Trivy Scanner&#xa;88 Vulns (3 CRIT, 13 HIGH...)" style="rounded=1;whiteSpace=wrap;fillColor=#FFFFFF;" parent="5" vertex="1">
+          <mxGeometry x="80" y="170" width="140" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="9" value="Container Registry (AWS ECR)" style="cylinder;whiteSpace=wrap;fillColor=#FFF9C4;" parent="1" vertex="1">
+          <mxGeometry x="660" y="150" width="180" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="10" value="Deployment (Amazon EKS)" style="swimlane;fillColor=#F3E5F5;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="900" y="100" width="400" height="300" as="geometry" />
+        </mxCell>
+        <mxCell id="11" value="Worker Node 1&#xa;• Flask App Pod (root, port 5000)&#xa;• Falco DaemonSet" style="rounded=1;whiteSpace=wrap;fillColor=#FFFFFF;" parent="10" vertex="1">
+          <mxGeometry x="20" y="60" width="160" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="12" value="Worker Node 2&#xa;• Flask App Pod (root, port 5000)&#xa;• Falco DaemonSet" style="rounded=1;whiteSpace=wrap;fillColor=#FFFFFF;" parent="10" vertex="1">
+          <mxGeometry x="200" y="60" width="160" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="13" value="LoadBalancer Service&#xa;(Internet, port 80)" style="rounded=1;whiteSpace=wrap;fillColor=#FFFFFF;" parent="10" vertex="1">
+          <mxGeometry x="100" y="200" width="200" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="14" value="Runtime Monitoring" style="swimlane;fillColor=#FFEBEE;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="1340" y="100" width="280" height="300" as="geometry" />
+        </mxCell>
+        <mxCell id="15" value="Alerts:&#xa;• Shell spawned (root)&#xa;• /etc/shadow read&#xa;• Password search" style="rounded=1;whiteSpace=wrap;fillColor=#FFFFFF;" parent="14" vertex="1">
+          <mxGeometry x="30" y="60" width="220" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="16" value="Integration Points:&#xa;• SIEM (Splunk/Wazuh)&#xa;• Grafana Dashboards&#xa;• SOAR Automation&#xa;• Compliance Reporting" style="rounded=1;whiteSpace=wrap;fillColor=#FFFFFF;" parent="14" vertex="1">
+          <mxGeometry x="30" y="180" width="220" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;" parent="1" source="4" target="6" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="18" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;" parent="1" source="7" target="9" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="19" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;" parent="1" source="9" target="11" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;" parent="1" source="12" target="15" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="21" value="Key Security Layers&#xa;• Build-Time: Trivy, CVEs&#xa;• Config: RBAC, Netpol&#xa;• Runtime: Falco, Behavior Analysis" style="rounded=1;whiteSpace=wrap;fillColor=#FFFFFF;" parent="1" vertex="1">
+          <mxGeometry x="500" y="450" width="600" height="100" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
