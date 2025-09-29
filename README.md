@@ -1,15 +1,39 @@
-﻿Project Title: Container Security & Runtime Protection Pipeline
-Summary:
+﻿Container Security & Runtime Protection Pipeline
 
-Built vulnerable Flask application with intentional security flaws
-Implemented automated vulnerability scanning (88 CVEs found: 3 CRITICAL, 13 HIGH, 18 MEDIUM)
-Deployed to Kubernetes with security misconfigurations
-Installed Falco runtime threat detection
-Successfully detected security events in real-time
+A DevSecOps project showcasing container vulnerability scanning, Kubernetes runtime monitoring, and threat detection with industry-standard tools.
 
-Technologies: Docker, Kubernetes (EKS), Trivy, Falco, Python/Flask, AWS ECR, Helm
-Key Results:
+Overview
 
-Vulnerability scanning pipeline identifies real CVEs
-Runtime monitoring detects suspicious activities
-Complete DevSecOps workflow from build to deployment to monitorings
+Pipeline demonstrates security from build → deploy → runtime using an intentionally vulnerable Flask app, Trivy for image scanning, and Falco for runtime detection in Kubernetes (EKS).
+
+Architecture
+
+Vulnerable Flask App – intentionally insecure web app
+
+Image Scanning – Trivy identifies CVEs in dependencies and base images
+
+Runtime Protection – Falco monitors Kubernetes workloads
+
+Technologies
+
+Docker, AWS ECR, Amazon EKS, Helm
+
+Trivy (image scanning)
+
+Falco (runtime security)
+
+Python Flask (intentionally vulnerable)
+
+Key Features
+
+Vulnerability Scanning: 88 vulns (3 CRITICAL, 13 HIGH, etc.)
+
+Runtime Detection: alerts on sensitive file access, shell execution, privilege escalation, and network scans
+
+Misconfigurations: runs as root, excessive capabilities, secrets in env vars, permissive RBAC/netpol
+
+Findings
+
+CVEs in Flask, Pillow, Jinja2
+
+Runtime alerts: /etc/shadow access, shell spawned, password/keys search
